@@ -1,0 +1,32 @@
+services:
+  mock:
+    build: .
+    command: ["uvicorn", "mock_systems.app:app", "--host", "0.0.0.0", "--port", "9000"]
+    environment:
+      MOCK_RATE_LIMIT_EVERY: "7"
+      MOCK_TOKEN_TTL: "60"
+      MOCK_FAIL_RATE: "0.03"
+    ports: ["9000:9000"]
+
+  sync:
+    build: .
+    environment:
+      WAREHOUSE_BASE_URL: http://mock:9000/warehouse
+      WAREHOUSE_CLIENT_ID: local-demo-client
+      WAREHOUSE_CLIENT_SECRET: local-demo-secret
+      SHOP_BASE_URL: http://mock:9000/shop
+      SHOP_API_KEY: local-demo-shop-key
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      REPORTS_DIR: /app/reports
+    volumes: ["./reports:/app/reports"]
+    ports: ["8080:8080"]
+    depends_on: [mock]
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    ports: ["5678:5678"]
+    volumes: ["n8n_data:/home/node/.n8n"]
+    depends_on: [sync]
+
+volumes:
+  n8n_data:

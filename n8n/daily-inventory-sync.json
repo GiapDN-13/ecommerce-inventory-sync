@@ -1,0 +1,141 @@
+{
+  "name": "Daily inventory sync",
+  "nodes": [
+    {
+      "id": "6f0c9a1e-1b2a-4c55-9a51-2d2f4c1b7a01",
+      "name": "Every day at 06:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "6f0c9a1e-1b2a-4c55-9a51-2d2f4c1b7a02",
+      "name": "Run inventory sync",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://sync:8080/run",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apply",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "6f0c9a1e-1b2a-4c55-9a51-2d2f4c1b7a03",
+      "name": "Needs attention?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.summary.needs_attention }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6f0c9a1e-1b2a-4c55-9a51-2d2f4c1b7a04",
+      "name": "Send alert (Slack/Discord webhook)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        -100
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/REPLACE/WITH/YOUR-WEBHOOK",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: `Inventory sync: ${$json.summary.needs_review} SKU(s) need review, ${$json.updated} updated, ${$json.failed.length} failed.` }) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Every day at 06:00": {
+      "main": [
+        [
+          {
+            "node": "Run inventory sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run inventory sync": {
+      "main": [
+        [
+          {
+            "node": "Needs attention?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs attention?": {
+      "main": [
+        [
+          {
+            "node": "Send alert (Slack/Discord webhook)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

@@ -1,0 +1,46 @@
+sku,warehouse_units,shop_units,diff,status,action,reason
+SKU-0001,168,164,4,mismatch,update,
+SKU-0002,15,8,7,mismatch,update,
+SKU-0006,383,376,7,mismatch,update,
+SKU-0012,908,906,2,mismatch,update,
+SKU-0015,328,322,6,mismatch,update,
+SKU-0020,454,450,4,mismatch,update,
+SKU-0022,188,180,8,mismatch,update,
+SKU-0033,80,75,5,mismatch,update,
+SKU-0035,103,298,-195,mismatch,review,change of -195 units exceeds the safety threshold
+SKU-0037,110,,110,missing_in_shop,review,in warehouse but not listed in the shop
+SKU-0039,118,109,9,mismatch,update,
+SKU-0044,538,540,-2,mismatch,update,
+SKU-0048,23,14,9,mismatch,update,
+SKU-0050,169,350,-181,mismatch,review,change of -181 units exceeds the safety threshold
+SKU-0053,298,296,2,mismatch,update,
+SKU-0057,153,326,-173,mismatch,review,change of -173 units exceeds the safety threshold
+SKU-0059,0,120,-120,mismatch,review,change of -120 units exceeds the safety threshold
+SKU-0062,163,168,-5,mismatch,update,
+SKU-0063,399,395,4,mismatch,update,
+SKU-0065,815,814,1,mismatch,update,
+SKU-0066,704,899,-195,mismatch,update,
+SKU-0069,147,270,-123,mismatch,update,
+SKU-0072,135,130,5,mismatch,update,
+SKU-0074,211,210,1,mismatch,update,
+SKU-0075,450,,450,missing_in_shop,review,in warehouse but not listed in the shop
+SKU-0079,437,,437,missing_in_shop,review,in warehouse but not listed in the shop
+SKU-0082,93,88,5,mismatch,update,
+SKU-0083,450,445,5,mismatch,update,
+SKU-0084,736,809,-73,mismatch,update,
+SKU-0085,227,226,1,mismatch,update,
+SKU-0086,76,,76,missing_in_shop,review,in warehouse but not listed in the shop
+SKU-0087,151,149,2,mismatch,update,
+SKU-0092,133,136,-3,mismatch,update,
+SKU-0093,35,36,-1,mismatch,update,
+SKU-0094,101,224,-123,mismatch,review,change of -123 units exceeds the safety threshold
+SKU-0095,95,96,-1,mismatch,update,
+SKU-0096,162,168,-6,mismatch,update,
+SKU-0100,398,487,-89,mismatch,update,
+SKU-0101,114,241,-127,mismatch,review,change of -127 units exceeds the safety threshold
+SKU-0104,156,151,5,mismatch,update,
+SKU-0113,143,151,-8,mismatch,update,
+SKU-0117,107,106,1,mismatch,update,
+SKU-0119,161,154,7,mismatch,update,
+SKU-9001,,27,-27,unknown_to_warehouse,review,shop sells stock the warehouse does not have (oversell risk)
+SKU-9002,,5,-5,unknown_to_warehouse,review,shop sells stock the warehouse does not have (oversell risk)
